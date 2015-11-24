@@ -1,5 +1,8 @@
 {
     "require": {
         "phpmailer/phpmailer": "5.2.x"
+    },
+    "autoload": {
+        "psr-0": { "": "./" }
     }
 }
