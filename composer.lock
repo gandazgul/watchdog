@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b5604ffe88a33add27a1dbb02b010b0a",
+    "hash": "7ec0c1f8917a9e506188df43a26afc56",
+    "content-hash": "3d49552e4af9684018342b933d886ba2",
     "packages": [
         {
             "name": "phpmailer/phpmailer",

@@ -34,27 +34,31 @@ class Watchdog
     {
         $service = Settings::$service;
 
-        if (file_exists("/tmp/watchdog.lock")) {
+        if (file_exists("/tmp/watchdog.lock"))
+        {
             echo "Lock file exists. Run with 'reset' if \"{$service}\" is back up.";
             return;
         }
 
         $cardinals = ['First', 'Second'];
 
-        for ($i = 0; $i < 2; $i++) {
+        for ($i = 0; $i < 2; $i++)
+        {
             $output = [];
             echo "Checking service status\n";
-            exec("service $service status", $output);
+            exec("systemctl status $service", $output);
 
-            if ($output[0] != Settings::$expected_response) {
+            $output = join(' ', $output);
+
+            if (strpos($output, Settings::$expected_response) === false)
+            {
                 echo "Service is not running. Restarting. {$cardinals[$i]} try.\n";
-                exec("service $service restart");
+                exec("systemctl restart $service");
                 sleep(30);
 
                 if ($i == 1)//second try
                 {
-                    echo "Service failed to start, executing hook and sending email\n" .
-                        //execute hook
+                    echo "Service failed to start, executing hook and sending email\n" . //execute hook
                         Settings::on_failure();
 
                     //send mail
@@ -66,18 +70,24 @@ class Watchdog
                     $message = str_replace('{service}', $service, Settings::$message);
                     $message .= implode("\n ", $output);
 
-                    try {
-                        if (static::send_mail(Settings::$to, $subject, $message)) {
+                    try
+                    {
+                        if (static::send_mail(Settings::$to, $subject, $message))
+                        {
                             echo "Email sent!\n";
                             touch(Settings::$lock_file);
-                        } else {
+                        } else
+                        {
                             echo "There was an error sending the email\n";
                         }
-                    } catch (Exception $e) {
+                    } catch (Exception $e)
+                    {
                         echo "ERROR: {$e->getMessage()}\n";
                     }
                 }
-            } else {
+            }
+            else
+            {
                 echo "OK\n";
                 Settings::on_success();
                 break;
@@ -87,7 +97,8 @@ class Watchdog
 
     static function init($argv)
     {
-        if (count($argv) == 1) {
+        if (count($argv) == 1)
+        {
             echo <<<HELP
 Watchdog, the service watcher
 
@@ -97,7 +108,8 @@ Run with no arguments to print this help
 "php watchdog.php reset" will reset after a failure. We recommend you run this manually.
 
 HELP;
-        } else switch ($argv[1]) {
+        } else switch ($argv[1])
+        {
             case 'check':
                 static::check_service();
                 break;
