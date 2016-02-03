@@ -11,9 +11,9 @@ class Watchdog
     static function send_mail($to, $subject, $body)
     {
         $mailer = new PHPMailer(true);
-        $mailer->IsSMTP();
+        $mailer->isSMTP();
         $mailer->Host = Settings::$smtp_server; // SMTP server
-        //$mailer->SMTPDebug = 2; // enables SMTP debug information (for testing)
+        $mailer->SMTPDebug = Settings::$smtp_debug_level; // enables SMTP debug information (for testing)
         $mailer->SMTPAuth = true; // enable SMTP authentication
         $mailer->Port = Settings::$smtp_port; // set the SMTP port for the GMAIL server
         $mailer->Username = Settings::$smtp_username; // SMTP account username
@@ -106,9 +106,11 @@ Edit the settings file to tell watchdog what to do. (settings.php)
 Run with no arguments to print this help
 "php watchdog.php check" will check if your service is running. You might want to use this with a cron.
 "php watchdog.php reset" will reset after a failure. We recommend you run this manually.
+"php watchdog.php mail-test" will send a test email to check your SMTP settings.
 
 HELP;
-        } else switch ($argv[1])
+        }
+        else switch ($argv[1])
         {
             case 'check':
                 static::check_service();
@@ -117,6 +119,16 @@ HELP;
                 unlink(Settings::$lock_file);
                 exec("service " . Settings::$service . " start");
                 Settings::reset();
+                break;
+            case 'mail-test':
+                if (static::send_mail(Settings::$to, 'Test email from watchdog', 'Test email from watchdog'))
+                {
+                    echo "email sent successfully";
+                }
+                else
+                {
+                    echo 'There was an error sending the test email. Please check your settings. Set Settings::$smtp_debug_level to 2 to get debug information.';
+                }
                 break;
         }
     }

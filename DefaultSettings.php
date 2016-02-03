@@ -23,6 +23,7 @@ class DefaultSettings
     static $smtp_port = 587;
     static $smtp_username = '';
     static $smtp_password = '';
+    static $smtp_debug_level = 0; //See PHPMailer documentation to learn more
 
     //File path used as a lock to know watchdog failed to prevent it from running util you fix the service
     static $lock_file = "/tmp/watchdog.lock";
