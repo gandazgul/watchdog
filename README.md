@@ -1,5 +1,5 @@
 # Watchdog
-Simple service monitor written in PHP. This script relies on the `service` command being present and functional.
+Simple service monitor written in PHP. This script relies on the `systemctl` command being present and functional.
 
 # To run
 Either rename DefaultSettings.php as Settings.php (and the class inside) and fill out your settings
