@@ -7,9 +7,9 @@
  */
 class DefaultSettings
 {
-    //The name of the service to monitor, as it would be used with the service command (e.g. openvpn)
+    //The name of the service to monitor, as it would be used with the systemctl command (e.g. openvpn@client)
     static $service = '';
-    //Exact output of calling: (prompt)# service {service} status
+    //Output of calling: (prompt)# systemctl status {service} that can be used to reliably identify that the service is running.
     static $expected_response = '';
 
     //email settings
